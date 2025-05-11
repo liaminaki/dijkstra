@@ -1,0 +1,25 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+}
+#grid {
+  display: grid;
+  gap: 1px;
+  margin: 20px auto;
+  width: fit-content;
+}
+.cell {
+  aspect-ratio: 1 / 1;
+  width: 40px;
+  height: 40px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+}
+.cell.start { background-color: green; }
+.cell.end { background-color: red; }
+.cell.wall { background-color: black; }
+.cell.visited { background-color: lightblue; }
+.cell.path { background-color: yellow; }
+.controls {
+  margin-top: 10px;
+}
