@@ -3,7 +3,7 @@ import Dijkstra from './dijkstra.js';
 
 let gridSize = 10;
 let grid = new Grid(gridSize);
-let placingMode = 'wall';
+let placingMode = 'start';
 
 function bindGridEvents() {
   document.getElementById('grid').onclick = (e) => {
