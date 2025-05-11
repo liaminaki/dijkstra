@@ -12,9 +12,11 @@
     <label for="gridSize">Grid Size:</label>
     <input type="number" id="gridSize" min="2" max="26" value="10">
     <button id="resizeGrid">Resize Grid</button>
-    <button id="setStart">Set Start</button>
-    <button id="setEnd">Set End</button>
-    <button id="setWall">Set Wall</button>
+    <br><br>
+    <label><input type="radio" name="placingMode" id="radioStart" value="start" checked> Set Start</label>
+    <label><input type="radio" name="placingMode" id="radioEnd" value="end"> Set End</label>
+    <label><input type="radio" name="placingMode" id="radioWall" value="wall"> Set Wall</label>
+    <br><br>
     <button id="clear">Clear</button>
     <button id="findPath">Find Path</button>
   </div>

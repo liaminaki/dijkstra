@@ -36,9 +36,12 @@ function bindGridEvents() {
 }
 
 function bindControlEvents() {
-  document.getElementById('setStart').onclick = () => placingMode = 'start';
-  document.getElementById('setEnd').onclick = () => placingMode = 'end';
-  document.getElementById('setWall').onclick = () => placingMode = 'wall';
+  document.querySelectorAll('input[name="placingMode"]').forEach(radio => {
+    radio.onchange = () => {
+      if (radio.checked) placingMode = radio.value;
+    };
+  });
+
   document.getElementById('clear').onclick = () => {
     grid.reset();
     grid.startNode = null;
