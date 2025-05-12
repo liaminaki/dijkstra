@@ -36,6 +36,20 @@ function bindGridEvents() {
   };
 }
 
+// Helper to render the last step (full solution)
+async function renderLastStep() {
+  if (!grid.startNode || !grid.endNode) {
+    alert("Please set both start and end points.");
+    return;
+  }
+  if (!algo) {
+    algo = new Dijkstra(grid);
+    await algo.findPathSteps();
+  }
+  algo.currentStep = algo.steps.length - 1;
+  algo.renderStep(algo.currentStep);
+}
+
 function bindControlEvents() {
   document.querySelectorAll('input[name="placingMode"]').forEach(radio => {
     radio.onchange = () => {
@@ -54,20 +68,15 @@ function bindControlEvents() {
     }
   };
 
-  document.getElementById('findPath').onclick = async () => {
-    if (!grid.startNode || !grid.endNode) {
-      alert("Please set both start and end points.");
-      return;
-    }
+  document.getElementById('findPath').onclick = renderLastStep;
 
-    if (!algo){
-      algo = new Dijkstra(grid);
-      await algo.findPathSteps();
-    }
+  document.getElementById('last').onclick = renderLastStep;
 
-    // Render the last step (full solution)
-    algo.currentStep = algo.steps.length - 1;
-    algo.renderStep(algo.currentStep);
+  document.getElementById('first').onclick = () => {
+    if (algo && algo.steps.length > 0) {
+      algo.currentStep = 0;
+      algo.renderStep(0);
+    }
   };
 
   document.getElementById('play').onclick = async () => {
