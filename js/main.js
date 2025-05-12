@@ -57,6 +57,31 @@ function bindControlEvents() {
     };
   });
 
+  const togglePlayBtn = document.getElementById('togglePlay');
+  let isPlaying = false;
+
+  togglePlayBtn.onclick = async () => {
+    if (!grid.startNode || !grid.endNode) {
+      alert("Please set both start and end points.");
+      return;
+    }
+    if (!algo) {
+      algo = new Dijkstra(grid);
+      await algo.findPathSteps();
+      algo.currentStep = 0;
+      algo.renderStep(algo.currentStep);
+    }
+    if (!isPlaying) {
+      algo.play(50);
+      togglePlayBtn.textContent = "Pause";
+      isPlaying = true;
+    } else {
+      algo.pause();
+      togglePlayBtn.textContent = "Play";
+      isPlaying = false;
+    }
+  };
+
   document.getElementById('clear').onclick = () => {
     grid.reset();
     grid.startNode = null;
@@ -66,6 +91,8 @@ function bindControlEvents() {
       algo.clearSteps();
       algo = null;
     }
+    togglePlayBtn.textContent = "Play";
+    isPlaying = false;
   };
 
   document.getElementById('findPath').onclick = renderLastStep;
@@ -77,24 +104,6 @@ function bindControlEvents() {
       algo.currentStep = 0;
       algo.renderStep(0);
     }
-  };
-
-  document.getElementById('play').onclick = async () => {
-    if (!grid.startNode || !grid.endNode) {
-      alert("Please set both start and end points.");
-      return;
-    }
-    if (!algo) {
-      algo = new Dijkstra(grid);
-      await algo.findPathSteps();
-      algo.currentStep = 0;
-      algo.renderStep(algo.currentStep);
-    }
-    algo.play(50);
-  };
-
-  document.getElementById('pause').onclick = () => {
-    if (algo) algo.pause();
   };
 
   document.getElementById('next').onclick = () => {
@@ -114,6 +123,8 @@ function bindControlEvents() {
     grid = new Grid(gridSize);
     placingMode = 'wall';
     bindGridEvents();
+    togglePlayBtn.textContent = "Play";
+    isPlaying = false;
   };
 }
 
