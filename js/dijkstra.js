@@ -79,7 +79,7 @@ class Dijkstra {
     }
   }
 
-  play(speed = 50) {
+  play(speed = 50, onFinish) {
     if (this.isPlaying) return;
     this.isPlaying = true;
     this.playInterval = setInterval(() => {
@@ -88,6 +88,7 @@ class Dijkstra {
         this.renderStep(this.currentStep);
       } else {
         this.pause();
+        if (onFinish) onFinish();
       }
     }, speed);
   }

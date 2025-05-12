@@ -72,7 +72,11 @@ function bindControlEvents() {
       algo.renderStep(algo.currentStep);
     }
     if (!isPlaying) {
-      algo.play(50);
+      algo.play(50, () => {
+        // Callback when finished
+        togglePlayBtn.textContent = "Play";
+        isPlaying = false;
+      });
       togglePlayBtn.textContent = "Pause";
       isPlaying = true;
     } else {
