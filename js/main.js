@@ -54,25 +54,30 @@ async function renderLastStep() {
 
 function updateFindPathBtn(isPlaying) {
   const findPathBtn = document.getElementById('findPath');
-  // Disable if missing start/end node or if done
+  const hint = document.getElementById('findPathHint');
   const noEndpoints = !grid.startNode || !grid.endNode;
   const isDone = algo && algo.currentStep === algo.steps.length - 1;
 
   if (isPlaying) {
     findPathBtn.textContent = "Pause";
     findPathBtn.disabled = false;
+    hint.style.display = "none";
   } else if (noEndpoints) {
     findPathBtn.textContent = "Find Shortest Path";
     findPathBtn.disabled = true;
+    hint.style.display = "block";
   } else if (isDone) {
     findPathBtn.textContent = "Done";
     findPathBtn.disabled = true;
-  } else if (algo && algo.steps.length > 0 && algo.currentStep < algo.steps.length - 1 && algo.currentStep > 0) {
+    hint.style.display = "none";
+  } else if (algo && algo.steps.length > 0 && algo.currentStep < algo.steps.length - 1) {
     findPathBtn.textContent = "Continue";
     findPathBtn.disabled = false;
+    hint.style.display = "none";
   } else {
     findPathBtn.textContent = "Find Shortest Path";
     findPathBtn.disabled = false;
+    hint.style.display = "none";
   }
 }
 
