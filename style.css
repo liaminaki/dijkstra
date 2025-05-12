@@ -52,6 +52,7 @@ p {
 .grid-controls_row-1 {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 0.5rem;
 }
 
 .grid-controls_row-2 {
@@ -124,4 +125,29 @@ input[type="radio"] {
 
 #radioWall:checked {
   background-color: var(--black);
+}
+
+button {
+  all: unset;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.sec-btn:hover {
+  text-decoration: underline;
+}
+
+.main-btn {
+  width: 100%;
+  padding: 0.5rem 0.5rem;
+  background-color: var(--black);
+  color: white;
+  border: 1px solid var(--black);
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+}
+
+.main-btn:hover {
+  background-color: var(--path-color);
+  color: var(--black);
 }
