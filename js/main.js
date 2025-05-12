@@ -21,7 +21,7 @@ function bindGridEvents() {
       e.target.classList.add('start');
       node.isStart = true;
       grid.startNode = node;
-      updateFindPathBtn(false);
+      updateButtons(false);
     } else if (placingMode === 'end') {
       if (grid.endNode) {
         document.querySelector('.end')?.classList.remove('end');
@@ -30,7 +30,7 @@ function bindGridEvents() {
       e.target.classList.add('end');
       node.isEnd = true;
       grid.endNode = node;
-      updateFindPathBtn(false);
+      updateButtons(false);
     } else if (!node.isStart && !node.isEnd) {
       node.isWall = !node.isWall;
       e.target.classList.toggle('wall');
@@ -70,7 +70,7 @@ function updateFindPathBtn(isPlaying) {
     findPathBtn.textContent = "Done";
     findPathBtn.disabled = true;
     hint.style.display = "none";
-  } else if (algo && algo.steps.length > 0 && algo.currentStep < algo.steps.length - 1) {
+  } else if (algo && algo.steps.length > 0 && algo.currentStep < algo.steps.length - 1 && algo.currentStep > 0) {
     findPathBtn.textContent = "Continue";
     findPathBtn.disabled = false;
     hint.style.display = "none";
@@ -79,6 +79,26 @@ function updateFindPathBtn(isPlaying) {
     findPathBtn.disabled = false;
     hint.style.display = "none";
   }
+}
+
+function updatePlaybackBtns() {
+  const firstBtn = document.getElementById('first');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  const lastBtn = document.getElementById('last');
+  const noEndpoints = !grid.startNode || !grid.endNode;
+  const disablePlayback = noEndpoints || !algo || !algo.steps || algo.steps.length === 0;
+  const isDone = algo && algo.currentStep === algo.steps.length - 1;
+
+  firstBtn.disabled = disablePlayback || algo.currentStep === 0;
+  prevBtn.disabled = disablePlayback || algo.currentStep === 0;
+  nextBtn.disabled = disablePlayback || isDone;
+  lastBtn.disabled = disablePlayback || isDone;
+}
+
+function updateButtons(isPlaying) {
+  updateFindPathBtn(isPlaying);
+  updatePlaybackBtns();
 }
 
 function bindControlEvents() {
@@ -105,14 +125,14 @@ function bindControlEvents() {
     if (!isPlaying) {
       algo.play(50, () => {
         isPlaying = false;
-        updateFindPathBtn(isPlaying);
+        updateButtons(isPlaying);
       });
       isPlaying = true;
     } else {
       algo.pause();
       isPlaying = false;
     }
-    updateFindPathBtn(isPlaying);
+    updateButtons(isPlaying);
   };
 
   document.getElementById('clear').onclick = () => {
@@ -124,13 +144,13 @@ function bindControlEvents() {
       algo = null;
     }
     isPlaying = false;
-    updateFindPathBtn(isPlaying);
+    updateButtons(isPlaying);
   };
 
   document.getElementById('last').onclick = async () => {
     await renderLastStep();
     isPlaying = false;
-    updateFindPathBtn(isPlaying);
+    updateButtons(isPlaying);
   };
 
   document.getElementById('first').onclick = () => {
@@ -138,7 +158,7 @@ function bindControlEvents() {
       algo.currentStep = 0;
       algo.renderStep(0);
       isPlaying = false;
-      updateFindPathBtn(isPlaying);
+      updateButtons(isPlaying);
     }
   };
 
@@ -146,7 +166,7 @@ function bindControlEvents() {
     if (algo) {
       algo.next();
       isPlaying = false;
-      updateFindPathBtn(isPlaying);
+      updateButtons(isPlaying);
     }
   };
 
@@ -154,7 +174,7 @@ function bindControlEvents() {
     if (algo) {
       algo.prev();
       isPlaying = false;
-      updateFindPathBtn(isPlaying);
+      updateButtons(isPlaying);
     }
   };
 
@@ -166,11 +186,11 @@ function bindControlEvents() {
     grid = new Grid(gridSize);
     bindGridEvents();
     isPlaying = false;
-    updateFindPathBtn(isPlaying);
+    updateButtons(isPlaying);
   });
 }
 
 // Initial setup
 bindGridEvents();
 bindControlEvents();
-updateFindPathBtn(false);
+updateButtons(false);
