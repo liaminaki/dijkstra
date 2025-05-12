@@ -13,8 +13,8 @@ class Grid {
     const container = document.getElementById('grid');
     container.innerHTML = '';
     container.style.display = 'grid';
-    container.style.gridTemplateColumns = `repeat(${this.size}, 40px)`;
-    container.style.gridTemplateRows = `repeat(${this.size}, 40px)`;
+    container.style.gridTemplateColumns = `repeat(${this.size}, calc((var(--body-width) - 1px) / ${this.size} - 1px))`;
+    container.style.gridTemplateRows = `repeat(${this.size}, calc((var(--body-width) - 1px) / ${this.size} - 1px))`;
 
     for (let y = 0; y < this.size; y++) {
       for (let x = 0; x < this.size; x++) {

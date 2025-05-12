@@ -2,30 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Pathfinding Visualizer</title>
+  <title>Dijkstra</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Dijkstra's Pathfinding Visualizer</h1>
-  <div id="grid"></div>
-  <div class="controls">
-    <button id="first">First</button>
-    <button id="prev">Prev</button>
-    <button id="togglePlay">Play</button>
-    <button id="next">Next</button>
-    <button id="last">Last</button>
-    <br><br>
-    <label for="gridSize">Grid Size:</label>
-    <input type="number" id="gridSize" min="2" max="26" value="10">
-    <button id="resizeGrid">Resize Grid</button>
-    <br><br>
-    <label><input type="radio" name="placingMode" id="radioStart" value="start" checked> Set Start</label>
-    <label><input type="radio" name="placingMode" id="radioEnd" value="end"> Set End</label>
-    <label><input type="radio" name="placingMode" id="radioWall" value="wall"> Set Wall</label>
-    <br><br>
-    <button id="clear">Clear</button>
+  <header>
+    <h1>DIJKSTRA</h1>
+    <p>Liam Iñaki Gillamac</p>
+  </header>
+  <main>
+    <div id="grid" aria-label="Dijkstra Grid"></div>
+    <form class="grid-controls" onsubmit="return false;">
+      <div class="grid-controls_row-1">
+        <div class="cell-settings">
+          <label><input type="radio" name="placingMode" id="radioStart" value="start" checked> Start</label>
+          <label><input type="radio" name="placingMode" id="radioEnd" value="end"> End</label>
+          <label><input type="radio" name="placingMode" id="radioWall" value="wall"> Wall</label>
+        </div>
+        <button type="button" id="clear">Clear</button>
+      </div>
+      <div class="grid-controls_row-2">
+        <label for="gridSize">Grid Size:</label>
+        <input type="number" id="gridSize" min="2" max="26" value="10" style="width: 3em;">
+        <button type="button" id="resizeGrid">Resize Grid</button>
+      </div>
+    </form>
+  </main>
+  <footer class="controls">
     <button id="findPath">Find Path</button>
-  </div>
+    <div class="playback-controls">
+      <button id="first" title="Go to first step">First</button>
+      <button id="prev" title="Previous step">Prev</button>
+      <button id="togglePlay" title="Play/Pause">Play</button>
+      <button id="next" title="Next step">Next</button>
+      <button id="last" title="Go to last step">Last</button>
+    </div>
+  </footer>
   <script type="module" src="js/main.js"></script>
 </body>
 </html>
