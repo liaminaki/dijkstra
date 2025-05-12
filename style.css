@@ -50,18 +50,19 @@ p {
   width: 100%;
 }
 
-.grid-controls_row-1 {
+.grid-controls_row-1, .grid-controls_row-2{
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-.grid-controls_row-2 {
+/* .grid-controls_row-2 {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 0.5rem;
-}
+} */
 
 .cell {
   aspect-ratio: 1 / 1;
@@ -187,4 +188,22 @@ input[type="number"] {
   gap: 1rem;
   justify-content: center;
   align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.speed-control {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+#speedRange {
+  width: 6rem;
+  accent-color: var(--black);
+  margin: 0;
+}
+
+.hint {
+  color: var(--end-color);
 }

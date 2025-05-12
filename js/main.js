@@ -5,6 +5,17 @@ let gridSize = 10;
 let grid = new Grid(gridSize);
 let placingMode = 'start';
 let algo = null;
+let speed = 50;
+const minMs = 10;
+const maxMs = 500;
+
+const speedRange = document.getElementById('speedRange');
+
+function getSpeedFromSlider(val) {
+  // val: 0 (slowest) to 100 (fastest)
+  // Reverse: left = maxMs, right = minMs
+  return Math.round(maxMs - (val / 100) * (maxMs - minMs));
+}
 
 function bindGridEvents() {
   document.getElementById('grid').onclick = (e) => {
@@ -123,7 +134,7 @@ function bindControlEvents() {
       algo.renderStep(algo.currentStep);
     }
     if (!isPlaying) {
-      algo.play(50, () => {
+      algo.play(speed, () => {
         isPlaying = false;
         updateButtons(isPlaying);
       });
@@ -187,6 +198,20 @@ function bindControlEvents() {
     bindGridEvents();
     isPlaying = false;
     updateButtons(isPlaying);
+  });
+
+  // Speed slider event
+  speedRange.addEventListener('input', (e) => {
+    speed = getSpeedFromSlider(e.target.value);
+
+    // If currently playing, restart with new speed
+    if (isPlaying && algo) {
+      algo.pause();
+      algo.play(speed, () => {
+        isPlaying = false;
+        updateButtons(isPlaying);
+      });
+    }
   });
 }
 
