@@ -77,3 +77,51 @@ p {
     --body-width: calc(100vw - 2 * var(--margin));
   }
 }
+
+label {
+  cursor: pointer;
+}
+
+.cell-settings {
+  display: flex;
+  gap: 1rem;
+}
+
+input[type="radio"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  top: 13.33333px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 0.75rem;
+  width: 0.75rem;
+  border: 1px solid var(--black);
+  cursor: pointer;
+  display: inline-block;
+  margin: 0;
+  vertical-align: middle;
+}
+
+#radioStart:checked{
+  background-color: var(--start-color);
+}
+
+/* label:has(#radioStart) {
+  color: var(--start-color);
+} */
+
+#radioEnd:checked{
+  background-color: var(--end-color);
+}
+
+/* label:has(#radioEnd) {
+  color: var(--end-color);
+} */
+
+#radioWall:checked {
+  background-color: var(--black);
+}
