@@ -50,6 +50,19 @@ async function renderLastStep() {
   algo.renderStep(algo.currentStep);
 }
 
+function updateFindPathBtnText(isPlaying) {
+  const findPathBtn = document.getElementById('findPath');
+  if (isPlaying) {
+    findPathBtn.textContent = "Pause";
+  } else if (algo && algo.currentStep === algo.steps.length - 1) {
+    findPathBtn.textContent = "Done";
+  } else if (algo && algo.steps.length > 0 && algo.currentStep < algo.steps.length - 1 && algo.currentStep > 0) {
+    findPathBtn.textContent = "Continue";
+  } else {
+    findPathBtn.textContent = "Find Shortest Path";
+  }
+}
+
 function bindControlEvents() {
   document.querySelectorAll('input[name="placingMode"]').forEach(radio => {
     radio.onchange = () => {
@@ -57,10 +70,10 @@ function bindControlEvents() {
     };
   });
 
-  const togglePlayBtn = document.getElementById('togglePlay');
+  const findPathBtn = document.getElementById('findPath');
   let isPlaying = false;
 
-  togglePlayBtn.onclick = async () => {
+  findPathBtn.onclick = async () => {
     if (!grid.startNode || !grid.endNode) {
       alert("Please set both start and end points.");
       return;
@@ -73,49 +86,58 @@ function bindControlEvents() {
     }
     if (!isPlaying) {
       algo.play(50, () => {
-        // Callback when finished
-        togglePlayBtn.textContent = "Play";
         isPlaying = false;
+        updateFindPathBtnText(isPlaying);
       });
-      togglePlayBtn.textContent = "Pause";
       isPlaying = true;
     } else {
       algo.pause();
-      togglePlayBtn.textContent = "Play";
       isPlaying = false;
     }
+    updateFindPathBtnText(isPlaying);
   };
 
   document.getElementById('clear').onclick = () => {
     grid.reset();
     grid.startNode = null;
     grid.endNode = null;
-
     if (algo) {
       algo.clearSteps();
       algo = null;
     }
-    togglePlayBtn.textContent = "Play";
     isPlaying = false;
+    updateFindPathBtnText(isPlaying);
   };
 
-  document.getElementById('findPath').onclick = renderLastStep;
-
-  document.getElementById('last').onclick = renderLastStep;
+  document.getElementById('last').onclick = async () => {
+    await renderLastStep();
+    isPlaying = false;
+    updateFindPathBtnText(isPlaying);
+  };
 
   document.getElementById('first').onclick = () => {
     if (algo && algo.steps.length > 0) {
       algo.currentStep = 0;
       algo.renderStep(0);
+      isPlaying = false;
+      updateFindPathBtnText(isPlaying);
     }
   };
 
   document.getElementById('next').onclick = () => {
-    if (algo) algo.next();
+    if (algo) {
+      algo.next();
+      isPlaying = false;
+      updateFindPathBtnText(isPlaying);
+    }
   };
 
   document.getElementById('prev').onclick = () => {
-    if (algo) algo.prev();
+    if (algo) {
+      algo.prev();
+      isPlaying = false;
+      updateFindPathBtnText(isPlaying);
+    }
   };
 
   document.getElementById('gridSize').addEventListener('input', () => {
@@ -126,8 +148,8 @@ function bindControlEvents() {
     grid = new Grid(gridSize);
     placingMode = 'wall';
     bindGridEvents();
-    togglePlayBtn.textContent = "Play";
     isPlaying = false;
+    updateFindPathBtnText(isPlaying);
   });
 }
 
