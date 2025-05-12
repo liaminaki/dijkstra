@@ -21,6 +21,7 @@ function bindGridEvents() {
       e.target.classList.add('start');
       node.isStart = true;
       grid.startNode = node;
+      updateFindPathBtn(false);
     } else if (placingMode === 'end') {
       if (grid.endNode) {
         document.querySelector('.end')?.classList.remove('end');
@@ -29,6 +30,7 @@ function bindGridEvents() {
       e.target.classList.add('end');
       node.isEnd = true;
       grid.endNode = node;
+      updateFindPathBtn(false);
     } else if (!node.isStart && !node.isEnd) {
       node.isWall = !node.isWall;
       e.target.classList.toggle('wall');
@@ -50,16 +52,27 @@ async function renderLastStep() {
   algo.renderStep(algo.currentStep);
 }
 
-function updateFindPathBtnText(isPlaying) {
+function updateFindPathBtn(isPlaying) {
   const findPathBtn = document.getElementById('findPath');
+  // Disable if missing start/end node or if done
+  const noEndpoints = !grid.startNode || !grid.endNode;
+  const isDone = algo && algo.currentStep === algo.steps.length - 1;
+
   if (isPlaying) {
     findPathBtn.textContent = "Pause";
-  } else if (algo && algo.currentStep === algo.steps.length - 1) {
+    findPathBtn.disabled = false;
+  } else if (noEndpoints) {
+    findPathBtn.textContent = "Find Shortest Path";
+    findPathBtn.disabled = true;
+  } else if (isDone) {
     findPathBtn.textContent = "Done";
+    findPathBtn.disabled = true;
   } else if (algo && algo.steps.length > 0 && algo.currentStep < algo.steps.length - 1 && algo.currentStep > 0) {
     findPathBtn.textContent = "Continue";
+    findPathBtn.disabled = false;
   } else {
     findPathBtn.textContent = "Find Shortest Path";
+    findPathBtn.disabled = false;
   }
 }
 
@@ -87,14 +100,14 @@ function bindControlEvents() {
     if (!isPlaying) {
       algo.play(50, () => {
         isPlaying = false;
-        updateFindPathBtnText(isPlaying);
+        updateFindPathBtn(isPlaying);
       });
       isPlaying = true;
     } else {
       algo.pause();
       isPlaying = false;
     }
-    updateFindPathBtnText(isPlaying);
+    updateFindPathBtn(isPlaying);
   };
 
   document.getElementById('clear').onclick = () => {
@@ -106,13 +119,13 @@ function bindControlEvents() {
       algo = null;
     }
     isPlaying = false;
-    updateFindPathBtnText(isPlaying);
+    updateFindPathBtn(isPlaying);
   };
 
   document.getElementById('last').onclick = async () => {
     await renderLastStep();
     isPlaying = false;
-    updateFindPathBtnText(isPlaying);
+    updateFindPathBtn(isPlaying);
   };
 
   document.getElementById('first').onclick = () => {
@@ -120,7 +133,7 @@ function bindControlEvents() {
       algo.currentStep = 0;
       algo.renderStep(0);
       isPlaying = false;
-      updateFindPathBtnText(isPlaying);
+      updateFindPathBtn(isPlaying);
     }
   };
 
@@ -128,7 +141,7 @@ function bindControlEvents() {
     if (algo) {
       algo.next();
       isPlaying = false;
-      updateFindPathBtnText(isPlaying);
+      updateFindPathBtn(isPlaying);
     }
   };
 
@@ -136,7 +149,7 @@ function bindControlEvents() {
     if (algo) {
       algo.prev();
       isPlaying = false;
-      updateFindPathBtnText(isPlaying);
+      updateFindPathBtn(isPlaying);
     }
   };
 
@@ -146,13 +159,13 @@ function bindControlEvents() {
     if (newSize > 26) newSize = 26;
     gridSize = newSize;
     grid = new Grid(gridSize);
-    placingMode = 'wall';
     bindGridEvents();
     isPlaying = false;
-    updateFindPathBtnText(isPlaying);
+    updateFindPathBtn(isPlaying);
   });
 }
 
 // Initial setup
 bindGridEvents();
 bindControlEvents();
+updateFindPathBtn(false);
