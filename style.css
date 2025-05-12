@@ -168,3 +168,19 @@ input[type="number"] {
   border: 1px solid var(--gray);
   cursor: default;
 }
+
+.icon-btn {
+  display: flex;
+  align-items: center;
+}
+
+.icon-btn:hover {
+  scale: 1.1;
+}
+
+.playback-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}

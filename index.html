@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <title>Dijkstra</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
 </head>
 <body>
   <header>
@@ -34,10 +35,18 @@
     </div>
     <button id="findPath" class="main-btn">FIND SHORTEST PATH</button>
     <div class="playback-controls">
-      <button id="first" title="Go to first step">First</button>
-      <button id="prev" title="Previous step">Prev</button>
-      <button id="next" title="Next step">Next</button>
-      <button id="last" title="Go to last step">Last</button>
+      <button id="first" title="Go to first step" class="icon-btn">
+        <iconify-icon icon="ant-design:fast-backward-filled" width="24" height="24"></iconify-icon>
+      </button>
+      <button id="prev" title="Previous step" class="icon-btn">
+        <iconify-icon icon="material-symbols:skip-previous" width="24" height="24"></iconify-icon>
+      </button>
+      <button id="next" title="Next step" class="icon-btn">
+        <iconify-icon icon="material-symbols:skip-next" width="24" height="24"></iconify-icon>
+      </button>
+      <button id="last" title="Go to last step" class="icon-btn">
+        <iconify-icon icon="ant-design:fast-forward-filled" width="24" height="24"></iconify-icon>
+      </button>
     </div>
   </footer>
   <script type="module" src="js/main.js"></script>
