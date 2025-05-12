@@ -70,3 +70,10 @@ p {
 .cell.wall { background-color: var(--black); }
 .cell.visited { background-color: var(--visited-color); }
 .cell.path { background-color: var(--path-color); }
+
+@media (max-width: 600px) {
+  :root {
+    --margin: 1rem;
+    --body-width: calc(100vw - 2 * var(--margin));
+  }
+}
