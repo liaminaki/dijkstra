@@ -58,6 +58,8 @@ p {
 .grid-controls_row-2 {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .cell {
@@ -150,4 +152,11 @@ button {
 .main-btn:hover {
   background-color: var(--path-color);
   color: var(--black);
+}
+
+
+input[type="number"] {
+  height: 1rem;
+  width: 2rem;
+  border: 1px solid var(--black);
 }

@@ -118,9 +118,8 @@ function bindControlEvents() {
     if (algo) algo.prev();
   };
 
-  document.getElementById('resizeGrid').onclick = () => {
-    const input = document.getElementById('gridSize');
-    let newSize = parseInt(input.value);
+  document.getElementById('gridSize').addEventListener('input', () => {
+    let newSize = parseInt(document.getElementById('gridSize').value);
     if (isNaN(newSize) || newSize < 2) newSize = 2;
     if (newSize > 26) newSize = 26;
     gridSize = newSize;
@@ -129,7 +128,7 @@ function bindControlEvents() {
     bindGridEvents();
     togglePlayBtn.textContent = "Play";
     isPlaying = false;
-  };
+  });
 }
 
 // Initial setup
