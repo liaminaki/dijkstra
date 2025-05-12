@@ -2,12 +2,18 @@ class Dijkstra {
   constructor(grid) {
     this.grid = grid;
     this.unvisited = [];
+    this.steps = [];
+    this.currentStep = 0;
+    this.isPlaying = false;
+    this.playInterval = null;
   }
 
-  async findPath() {
+  async findPathSteps() {
     const { startNode, endNode } = this.grid;
     startNode.distance = 0;
     this.unvisited = this.grid.grid.flat();
+    this.steps = [];
+    this.currentStep = 0;
 
     while (this.unvisited.length) {
       this.unvisited.sort((a, b) => a.distance - b.distance);
@@ -16,15 +22,28 @@ class Dijkstra {
       if (current.distance === Infinity) break;
 
       current.visited = true;
-      const cell = document.querySelector(`[data-x="${current.x}"][data-y="${current.y}"]`);
-      if (!current.isStart && !current.isEnd) {
-        cell.classList.add('visited');
-        await new Promise(r => setTimeout(r, 30));
-      }
+      this.steps.push({
+        type: 'visit',
+        x: current.x,
+        y: current.y,
+        isStart: current.isStart,
+        isEnd: current.isEnd
+      });
 
       if (current === endNode) {
-        this.drawPath(current);
-        return;
+        // Build path steps
+        let pathNode = current.previous;
+        const pathSteps = [];
+        while (pathNode && !pathNode.isStart) {
+          pathSteps.push({
+            type: 'path',
+            x: pathNode.x,
+            y: pathNode.y
+          });
+          pathNode = pathNode.previous;
+        }
+        this.steps = this.steps.concat(pathSteps.reverse());
+        break;
       }
 
       this.getNeighbors(current).forEach(neighbor => {
@@ -38,6 +57,68 @@ class Dijkstra {
         }
       });
     }
+  }
+
+  // Render a specific step
+  renderStep(stepIdx) {
+    // Reset grid visuals
+    document.querySelectorAll('.cell').forEach(cell => {
+      cell.classList.remove('visited', 'path');
+    });
+    // Apply all steps up to stepIdx
+    for (let i = 0; i <= stepIdx; i++) {
+      const step = this.steps[i];
+      if (!step) continue;
+      const cell = document.querySelector(`[data-x="${step.x}"][data-y="${step.y}"]`);
+      if (step.type === 'visit' && !step.isStart && !step.isEnd) {
+        cell.classList.add('visited');
+      }
+      if (step.type === 'path') {
+        cell.classList.add('path');
+      }
+    }
+  }
+
+  play(speed = 50) {
+    if (this.isPlaying) return;
+    this.isPlaying = true;
+    this.playInterval = setInterval(() => {
+      if (this.currentStep < this.steps.length - 1) {
+        this.currentStep++;
+        this.renderStep(this.currentStep);
+      } else {
+        this.pause();
+      }
+    }, speed);
+  }
+
+  pause() {
+    this.isPlaying = false;
+    if (this.playInterval) clearInterval(this.playInterval);
+  }
+
+  next() {
+    if (this.currentStep < this.steps.length - 1) {
+      this.currentStep++;
+      this.renderStep(this.currentStep);
+    }
+  }
+
+  prev() {
+    if (this.currentStep > 0) {
+      this.currentStep--;
+      this.renderStep(this.currentStep);
+    }
+  }
+
+  resetSteps() {
+    this.currentStep = 0;
+    this.renderStep(0);
+  }
+
+  clearSteps() {
+    this.steps = [];
+    this.currentStep = 0;
   }
 
   getNeighbors(node) {
@@ -61,15 +142,6 @@ class Dijkstra {
     }
     return neighbors;
   }
-
-  async drawPath(endNode) {
-    let current = endNode.previous;
-    while (current && !current.isStart) {
-      const cell = document.querySelector(`[data-x="${current.x}"][data-y="${current.y}"]`);
-      cell.classList.add('path');
-      await new Promise(r => setTimeout(r, 50));
-      current = current.previous;
-    }
-  }
 }
+
 export default Dijkstra;
