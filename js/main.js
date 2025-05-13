@@ -127,6 +127,17 @@ function updateButtons(isPlaying) {
   updatePlaybackBtns();
 }
 
+function clearGridState() {
+  grid.reset();
+  grid.startNode = null;
+  grid.endNode = null;
+  if (algo) {
+    algo.clearSteps();
+    algo = null;
+  }
+  updateButtons(false);
+}
+
 function bindControlEvents() {
   placingModeRadios.forEach(radio => {
     radio.onchange = () => {
@@ -161,15 +172,7 @@ function bindControlEvents() {
   };
 
   clearBtn.onclick = () => {
-    grid.reset();
-    grid.startNode = null;
-    grid.endNode = null;
-    if (algo) {
-      algo.clearSteps();
-      algo = null;
-    }
-    isPlaying = false;
-    updateButtons(isPlaying);
+    clearGridState();
   };
 
   lastBtn.onclick = async () => {
@@ -209,9 +212,8 @@ function bindControlEvents() {
     if (newSize > 26) newSize = 26;
     gridSize = newSize;
     grid = new Grid(gridSize);
+    clearGridState();
     bindGridEvents();
-    isPlaying = false;
-    updateButtons(isPlaying);
   });
 
   // Speed slider event
