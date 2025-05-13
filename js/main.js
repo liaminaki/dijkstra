@@ -9,7 +9,17 @@ let speed = 50;
 const minMs = 10;
 const maxMs = 500;
 
+// --- DOM Elements (global) ---
 const speedRange = document.getElementById('speedRange');
+const findPathBtn = document.getElementById('findPath');
+const clearBtn = document.getElementById('clear');
+const lastBtn = document.getElementById('last');
+const firstBtn = document.getElementById('first');
+const nextBtn = document.getElementById('next');
+const prevBtn = document.getElementById('prev');
+const gridSizeInput = document.getElementById('gridSize');
+const hint = document.getElementById('findPathHint');
+const placingModeRadios = document.querySelectorAll('input[name="placingMode"]');
 
 function getSpeedFromSlider(val) {
   // val: 0 (slowest) to 100 (fastest)
@@ -64,8 +74,6 @@ async function renderLastStep() {
 }
 
 function updateFindPathBtn(isPlaying) {
-  const findPathBtn = document.getElementById('findPath');
-  const hint = document.getElementById('findPathHint');
   const noEndpoints = !grid.startNode || !grid.endNode;
   const isDone = algo && algo.currentStep === algo.steps.length - 1;
 
@@ -93,10 +101,6 @@ function updateFindPathBtn(isPlaying) {
 }
 
 function updatePlaybackBtns() {
-  const firstBtn = document.getElementById('first');
-  const prevBtn = document.getElementById('prev');
-  const nextBtn = document.getElementById('next');
-  const lastBtn = document.getElementById('last');
   const noEndpoints = !grid.startNode || !grid.endNode;
   const disablePlayback = noEndpoints || !algo || !algo.steps || algo.steps.length === 0;
   const isDone = algo && algo.currentStep === algo.steps.length - 1;
@@ -113,15 +117,14 @@ function updateButtons(isPlaying) {
 }
 
 function bindControlEvents() {
-  document.querySelectorAll('input[name="placingMode"]').forEach(radio => {
+  placingModeRadios.forEach(radio => {
     radio.onchange = () => {
       if (radio.checked) placingMode = radio.value;
     };
   });
 
-  const findPathBtn = document.getElementById('findPath');
+  // Find Path (Play/Pause)
   let isPlaying = false;
-
   findPathBtn.onclick = async () => {
     if (!grid.startNode || !grid.endNode) {
       alert("Please set both start and end points.");
@@ -146,7 +149,7 @@ function bindControlEvents() {
     updateButtons(isPlaying);
   };
 
-  document.getElementById('clear').onclick = () => {
+  clearBtn.onclick = () => {
     grid.reset();
     grid.startNode = null;
     grid.endNode = null;
@@ -158,13 +161,13 @@ function bindControlEvents() {
     updateButtons(isPlaying);
   };
 
-  document.getElementById('last').onclick = async () => {
+  lastBtn.onclick = async () => {
     await renderLastStep();
     isPlaying = false;
     updateButtons(isPlaying);
   };
 
-  document.getElementById('first').onclick = () => {
+  firstBtn.onclick = () => {
     if (algo && algo.steps.length > 0) {
       algo.currentStep = 0;
       algo.renderStep(0);
@@ -173,7 +176,7 @@ function bindControlEvents() {
     }
   };
 
-  document.getElementById('next').onclick = () => {
+  nextBtn.onclick = () => {
     if (algo) {
       algo.next();
       isPlaying = false;
@@ -181,7 +184,7 @@ function bindControlEvents() {
     }
   };
 
-  document.getElementById('prev').onclick = () => {
+  prevBtn.onclick = () => {
     if (algo) {
       algo.prev();
       isPlaying = false;
@@ -189,8 +192,8 @@ function bindControlEvents() {
     }
   };
 
-  document.getElementById('gridSize').addEventListener('input', () => {
-    let newSize = parseInt(document.getElementById('gridSize').value);
+  gridSizeInput.addEventListener('input', () => {
+    let newSize = parseInt(gridSizeInput.value);
     if (isNaN(newSize) || newSize < 2) newSize = 2;
     if (newSize > 26) newSize = 26;
     gridSize = newSize;
