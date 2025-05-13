@@ -29,6 +29,9 @@ function getSpeedFromSlider(val) {
 
 function bindGridEvents() {
   document.getElementById('grid').onclick = (e) => {
+    // Prevent editing if algo exists
+    if (algo) return;
+
     if (!e.target.classList.contains('cell')) return;
     const x = parseInt(e.target.dataset.x);
     const y = parseInt(e.target.dataset.y);
