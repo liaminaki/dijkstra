@@ -22,6 +22,7 @@ class Grid {
         cell.className = 'cell';
         cell.dataset.x = x;
         cell.dataset.y = y;
+        cell.title = '';
         container.appendChild(cell);
       }
     }
@@ -37,6 +38,7 @@ class Grid {
   reset() {
     document.querySelectorAll('.cell').forEach(cell => {
       cell.className = 'cell';
+      cell.title = '';
     });
     this.grid.forEach(row => row.forEach(n => {
       n.distance = Infinity;

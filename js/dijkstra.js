@@ -64,6 +64,9 @@ class Dijkstra {
     // Reset grid visuals
     document.querySelectorAll('.cell').forEach(cell => {
       cell.classList.remove('visited', 'path');
+      if (!cell.classList.contains('start') && !cell.classList.contains('end')) {
+        cell.title = '';
+      }
     });
     // Apply all steps up to stepIdx
     for (let i = 0; i <= stepIdx; i++) {
@@ -72,9 +75,11 @@ class Dijkstra {
       const cell = document.querySelector(`[data-x="${step.x}"][data-y="${step.y}"]`);
       if (step.type === 'visit' && !step.isStart && !step.isEnd) {
         cell.classList.add('visited');
+        cell.title = 'Visited';
       }
       if (step.type === 'path') {
         cell.classList.add('path');
+        cell.title = 'Path';
       }
     }
   }

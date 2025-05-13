@@ -36,25 +36,36 @@ function bindGridEvents() {
 
     if (placingMode === 'start') {
       if (grid.startNode) {
-        document.querySelector('.start')?.classList.remove('start');
-        grid.startNode.isStart = false;
+        const prevCell = document.querySelector('.start');
+        if (prevCell) {
+          grid.startNode.isStart = false;
+          prevCell.classList.remove('start');
+          prevCell.title = '';
+        }
       }
       e.target.classList.add('start');
       node.isStart = true;
       grid.startNode = node;
+      e.target.title = 'Start';
       updateButtons(false);
     } else if (placingMode === 'end') {
       if (grid.endNode) {
-        document.querySelector('.end')?.classList.remove('end');
-        grid.endNode.isEnd = false;
+        const prevCell = document.querySelector('.end');
+        if (prevCell) {
+          grid.endNode.isEnd = false;
+          prevCell.classList.remove('end');
+          prevCell.title = '';
+        }
       }
       e.target.classList.add('end');
       node.isEnd = true;
       grid.endNode = node;
+      e.target.title = 'End';
       updateButtons(false);
     } else if (!node.isStart && !node.isEnd) {
       node.isWall = !node.isWall;
       e.target.classList.toggle('wall');
+      e.target.title = node.isWall ? 'Wall' : '';
     }
   };
 }

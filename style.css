@@ -69,6 +69,7 @@ p {
   width: 100%;
   height: 100%;
   border: 1px solid var(--black);
+  cursor: pointer;
 }
 .cell.start { background-color: var(--start-color); }
 .cell.end { background-color: var(--end-color); }
